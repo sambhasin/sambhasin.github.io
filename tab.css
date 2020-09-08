@@ -71,7 +71,7 @@ body, html {
 	border-collapse:collapse;
 	border:1px solid #7f7f7f;
 	align:center;
-	
+	padding: 0px 20px;
 }
 .td 
 {
