@@ -1,0 +1,310 @@
+<html>
+<title> Daily Updates </Title>
+<link rel="stylesheet" href="tab.css">
+<head>
+
+</head>
+<body id="body">
+	
+	<center>
+	<span id="spn1"></span>
+	<span id="spn2"></span>
+	<span id="spn3"></span>
+	
+	<button class="tablink" onclick="openPage('All', this,'grey')" id="defaultOpen" name="All">All</button>
+	<button class="tablink" onclick="openPage('Asia', this, 'grey')" name="Asia">Asia</button>
+	<button class="tablink" onclick="openPage('NA', this, 'grey')">North&nbspAmerica</button>
+	<button class="tablink" onclick="openPage('Europe', this, 'grey')">Europe</button>
+	<button class="tablink" onclick="openPage('SA', this, 'grey')">South&nbspAmerica</button>
+	<button class="tablink" onclick="openPage('Africa', this, 'grey')">Africa</button>
+	<button class="tablink" onclick="openPage('Oceania', this, 'grey')">Oceania</button>
+	Search:<input type="search" id="text1" placeholder="Search.." onkeyup="openPage('search', this, 'grey')"></input>
+	<div id="div1"></div>
+	<div id="All" class="tabcontent"></div>
+	<div id="Asia" class="tabcontent"></div>
+	<div id="NA" class="tabcontent"></div>
+	<div id="Europe" class="tabcontent"></div>
+	<div id="SA" class="tabcontent"></div>
+	<div id="Africa" class="tabcontent"></div>
+	<div id="Oceania" class="tabcontent"></div>
+	</center>
+	<script src="common.js"></script>
+	<script type="text/javascript">
+	var cellsInRow = 8;
+	var jsonResult;
+	var asianCountry ;
+	var NACountry;
+	var SACountry;
+	var EuropeCountry;
+	var OceaniaCountry;
+	document.getElementById("defaultOpen").click();
+	
+	
+	function printData(pname)
+	{
+		console.log("printdata...." + pname);
+		// get the reference for the body
+        var div1 = document.getElementById(pname);
+				
+		var status = JSON.parse(localStorage.status);
+		var diff   = JSON.parse(localStorage.diff);
+		// creates a <table> element
+        var tbl = document.createElement("table");
+		
+		var header=  document.createElement('thead');
+		header.className = "thead";
+		var headerRow = document.createElement('tr')
+		
+		var headerCell = document.createElement("th");
+		headerCell.className = "th";
+		headerCellText = document.createTextNode("#");
+		headerCell.appendChild(headerCellText);
+		headerRow.appendChild(headerCell);
+		
+		headerCell = document.createElement("th");
+		headerCell.className = "th";
+		headerCellText = document.createTextNode("Country, Other");
+		headerCell.appendChild(headerCellText);
+		headerRow.appendChild(headerCell);
+		
+		headerCell = document.createElement("th");
+		headerCell.className = "th";
+		headerCellText = document.createTextNode("Total Cases");
+		headerCell.appendChild(headerCellText);
+		headerRow.appendChild(headerCell);
+		
+		headerCell = document.createElement("th");
+		headerCell.className = "th";
+		headerCellText = document.createTextNode("New Cases");
+		headerCell.appendChild(headerCellText);
+		headerRow.appendChild(headerCell);
+		
+		
+		headerCell = document.createElement("th");
+		headerCell.className = "th";
+		headerCellText = document.createTextNode("Total Deaths");
+		headerCell.appendChild(headerCellText);
+		headerRow.appendChild(headerCell);
+		
+		headerCell = document.createElement("th");
+		headerCell.className = "th";
+		headerCellText = document.createTextNode("New Deaths");
+		headerCell.appendChild(headerCellText);
+		headerRow.appendChild(headerCell);
+		
+		
+		headerCell = document.createElement("th");
+		headerCell.className = "th";
+		headerCellText = document.createTextNode("Total Recovered");
+		headerCell.appendChild(headerCellText);
+		headerRow.appendChild(headerCell);
+				
+		
+		headerCell = document.createElement("th");
+		headerCell.className = "th";
+		headerCellText = document.createTextNode("New Recovered");
+		headerCell.appendChild(headerCellText);
+		headerRow.appendChild(headerCell);
+		
+		header.appendChild(headerRow);
+		tbl.appendChild(header);
+		
+	
+		var totalRows = getRows(status);
+		
+		
+		var searchText  = document.getElementById("text1").value;
+		
+		
+		if(pname == 'Asia')
+		{
+			window.asianCountry = loadAsia();
+		}
+		else if(pname == 'NA')
+		{
+			window.NACountry = loadNA();
+		}
+		else if(pname == 'Europe')
+		{	
+			window.EuropeCountry = loadEurope();
+		}
+		else if(pname == 'SA')
+		{
+			window.SACountry = loadSA();
+		}
+		else if(pname == 'Africa')
+		{
+			window.AfricaCountry = loadAfrica();
+		}
+		else if(pname == 'Oceania')
+		{
+			window.OceaniaCountry = loadOcenia();
+		}
+		var count=0
+		 // creating rows
+        for (var r = 0; r < totalRows; r++) 
+		{
+			
+			if(pname == "Asia" && !window.asianCountry.has(status[r].country))
+			{
+				continue;
+				
+			}
+			else if(pname == 'NA' && !window.NACountry.has(status[r].country))
+			{
+				continue;
+			}
+			else if (pname == "Europe" && !window.EuropeCountry.has(status[r].country))
+			{
+				continue;
+			}
+			else if (pname == "SA" && !window.SACountry.has(status[r].country))
+			{
+				continue;
+			}
+			else if (pname == "Africa" && !window.AfricaCountry.has(status[r].country))
+			{
+				continue;
+			}
+			else if (pname == "Oceania" && !window.OceaniaCountry.has(status[r].country))
+			{
+				continue;
+			}
+			var countryName = getCountryName(status[r].country);
+					
+						
+			if(searchText != "" && countryName.search(searchText)< 0)
+			{
+				continue;
+			}
+			
+			count += 1;
+			var row = document.createElement("tr");
+			
+            for (var c = 0; c < cellsInRow; c++) 
+			{
+				// create cells in row
+				var cellText;
+
+				var cell = document.createElement("td");
+				cell.className = "td";
+				switch(c)
+				{
+					case 0:
+						cellText = document.createTextNode(count);			
+						break;
+					case 1:
+						cellText = document.createTextNode(countryName);			
+						break;
+					case 2:
+						cellText = document.createTextNode(formatNumber(status[r].cases));
+						break;
+					case 3:
+							new_cases = formatNumber(getDataofACountry(diff,"new_cases",status[r].country));
+							if(new_cases != 0 )
+							{
+								cellText = document.createTextNode("+" + new_cases );
+								cell.style = "background-color:lightyellow";
+							}
+							else
+							{
+								cellText = document.createTextNode("");
+							}
+						break;
+					case 4:
+						cellText = document.createTextNode(formatNumber(status[r].deaths));
+						break;
+					case 5:
+						new_deaths = formatNumber(getDataofACountry(diff,"new_deaths",status[r].country));
+						if(new_deaths != 0)
+						{
+							cellText = document.createTextNode("+" + new_deaths);
+							cell.style = "background-color:red";
+							
+						}
+						else
+						{
+							cellText = document.createTextNode("");
+						}
+						break;
+					case 6:
+						cellText = document.createTextNode(formatNumber(status[r].recovered));
+						break;
+					case 7:
+						new_recovered = formatNumber(getDataofACountry(diff,"new_recovered",status[r].country));
+						if(new_recovered != 0)
+						{
+							cellText = document.createTextNode("+" + new_recovered);
+							cell.style="background-color:green";
+						}
+						else
+						{
+							cellText = document.createTextNode("");
+						}
+						break;
+					default:
+					
+				}
+				/*if(searchText != "")
+				{
+					console.log("PrintData addingcell..");
+					console.info("SearchText:" + searchText + " and for Countr:" + countryName);
+				}*/
+				cell.appendChild(cellText);
+				row.appendChild(cell);
+			}           
+			tbl.appendChild(row); // add the row to the end of the table body
+			
+        }
+    
+		
+		var  span = document.getElementById("spn1");
+		span.style = "padding:10px;color:lightgrey;font-size:20px;"
+		span.innerHTML = "<br>Coranavirus Cases :<br> " + formatNumber(getWorldCovidCasesCount(status)) + "<br>";
+		
+		span = document.getElementById("spn2");
+		span.style = "padding:10px;color:lightgreen;font-size:20px;";
+		span.innerHTML = "<br>Deaths Cases :<br> " + formatNumber(getWorldCovidDeathCount(status)) + "<br>";
+						 
+		span = document.getElementById("spn3");
+		span.style = "padding:10px;color:#5588ff;font-size:20px;";
+		span.innerHTML = "<br>Recovered Cases :<br> " + formatNumber(getWorldCovidRecoveredCount(status)) + "<br><br>";
+						 
+		if(div1 == null && searchText != "")
+		{
+			div1 = document.getElementById("div1");
+		}
+		div1.appendChild(tbl); // appends <table> into <div1>
+	}
+
+	function getDataofACountry(diff,type,cCode)
+	{
+		var recordCount = getRows(diff);
+		var data = null;
+		for (var j=0; j < recordCount; j++)
+		{
+			if(diff[j].country == cCode)
+			{
+				switch(type)
+				{
+					case "new_cases":
+						data = diff[j].new_cases;
+						break;
+					case "new_deaths":
+						data = diff[j].new_deaths;
+						break;
+					case "new_recovered":
+						data = diff[j].new_recovered;
+						break;
+				}
+				break;
+			}
+		}
+		return data;
+	}
+	// Get the element with id="defaultOpen" and click on it
+	
+</script>
+
+</body>
+</html>

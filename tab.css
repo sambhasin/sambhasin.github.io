@@ -1,0 +1,86 @@
+/* Set height of body and the document to 100% to enable "full page tabs" */
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial;
+}
+
+/* Style tab links */
+.tablink {
+  
+  border:1px solid #7f7f7f;
+  background-color: white;
+  color: black;
+  float: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 8px 0px;
+  font-size: 12px;
+  width: 7%;
+}
+.tablinkAll {
+  
+  background-color: #777;
+  color: white;
+  float: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 8px 0px;
+  font-size: 15px;
+  width: 4%;
+}
+
+.tablink:hover {
+  background-color: #E8E8E8;
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+  color: white;
+  display: none;
+  padding: 0px 20px;
+  width: 47%;
+  height: 100%;
+  animation: fadeEffect 1s;
+  text-align:left;
+}
+.thead
+{
+	border:1px solid #7f7f7f;
+	width:60px;
+	height:30px;
+	text-align:center;
+	font-size:12px;
+	color:#B0B0B0
+
+}
+.th
+{
+	border:1px solid #7f7f7f;
+	width:30px;
+	height:30px;
+	text-align:center;
+	font-size:12px;
+	color:#B0B0B0
+}
+.table
+{
+	border-collapse:collapse;
+	border:1px solid #7f7f7f;
+	align:center;
+	
+}
+.td 
+{
+	border:1px solid #7f7f7f;
+	width:30px;
+	height:30px;
+	text-align:center;
+	font-size:12px;
+}
+#Home {background-color: red;}
+#News {background-color: green;}
+#Contact {background-color: blue;}
+#About {background-color: orange;}
