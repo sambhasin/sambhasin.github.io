@@ -62,7 +62,7 @@ body, html {
 	width:30px;
 	height:30px;
 	text-align:center;
-	font-size:12px;
+	font-size:15px;
 	color:#B0B0B0
 }
 .table
@@ -78,7 +78,7 @@ body, html {
 	width:30px;
 	height:30px;
 	text-align:center;
-	font-size:12px;
+	font-size:15px;
 }
 #Home {background-color: red;}
 #News {background-color: green;}
